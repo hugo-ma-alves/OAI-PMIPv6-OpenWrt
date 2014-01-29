@@ -16,7 +16,7 @@ define Package/oai-pmip
   SECTION:=net
   CATEGORY:=Network
   URL:=https://github.com/hugo-ma-alves/OAI-PMIPv6-OpenWrt && http://www.openairinterface.org/openairinterface-proxy-mobile-ipv6-oai-pmipv6
-  DEPENDS:= +libpcap +libpthread 
+  DEPENDS:= +libpcap +libpthread +libopenssl
   TITLE:=oai-pmip 
 endef
 
