@@ -1,7 +1,41 @@
 diff -ruN umip_orig/extras/UMIP0.4_LMA_UBUNTU.10.04.py umip/extras/UMIP0.4_LMA_UBUNTU.10.04.py
 --- umip_orig/extras/UMIP0.4_LMA_UBUNTU.10.04.py	2014-02-10 16:59:21.720245675 +0000
-+++ umip/extras/UMIP0.4_LMA_UBUNTU.10.04.py	2014-02-10 17:41:14.112244398 +0000
-@@ -40,11 +40,11 @@
++++ umip/extras/UMIP0.4_LMA_UBUNTU.10.04.py	2014-02-10 22:46:20.564092353 +0000
+@@ -9,42 +9,30 @@
+ from subprocess  import *
+ from netaddr import *
+ 
+-g_path = os.getcwd()
+-g_path = os.path.dirname(sys.argv[0]) + "/.."
+-g_path = os.path.abspath(g_path)
+-
+ try:
+-    opts, args = getopt.getopt(sys.argv[1:], "prd", ["pcap=", "runversion=", "pmipdir=", "cfile="])
++    opts, args = getopt.getopt(sys.argv[1:], "prd", [ "cfile="])
+ except getopt.GetoptError, err:
+     # print help information and exit:
+     print str(err) # will print something like "option -a not recognized"
+     sys.exit(2)
+ 
+-g_pcap = "no"
+-g_run_version = "1"
+ g_config_file = "example-ha-lma.conf"
+ 
+ for o,p in opts:
+-  if o in ('-p','--pcap'):
+-     g_pcap = p
+-  elif o in ['-r','--runversion']:
+-     g_run_version = str(p)
+-  elif o in ['-d','--pmipdir']:
+-     g_path = p
+-  elif o in ['-c','--cfile']:
++  if o in ['-c','--cfile']:
+      g_config_file = p
+ 
+ ############################################################################################
+-g_file_config=g_path+"/extras/"+g_config_file
++g_file_config=g_config_file
+ ############################################################################################
  
  print "Config file is : " + g_file_config
  
@@ -16,7 +50,7 @@ diff -ruN umip_orig/extras/UMIP0.4_LMA_UBUNTU.10.04.py umip/extras/UMIP0.4_LMA_U
  g_LmaCoreNetworkDevice                            = ""
  g_MagAddressIngress                               = []
  g_MagAddressEgress                                = []
-@@ -65,33 +65,33 @@
+@@ -65,33 +53,33 @@
          continue
      if 'RFC5213FixedMAGLinkLocalAddressOnAllAccessLinks' in line:
          print line
@@ -57,7 +91,7 @@ diff -ruN umip_orig/extras/UMIP0.4_LMA_UBUNTU.10.04.py umip/extras/UMIP0.4_LMA_U
          print command
          os.system(command)
          g_num_mags = g_num_mags + 1
-@@ -101,7 +101,7 @@
+@@ -101,7 +89,7 @@
      command = "ip -6 tunnel del ip6tnl" + str(i) + " >/dev/null 2>&1"
      os.system(command)
  
@@ -66,7 +100,7 @@ diff -ruN umip_orig/extras/UMIP0.4_LMA_UBUNTU.10.04.py umip/extras/UMIP0.4_LMA_U
  print command
  os.system(command)
  
-@@ -129,18 +129,18 @@
+@@ -129,18 +117,18 @@
  
  
  
@@ -89,8 +123,19 @@ diff -ruN umip_orig/extras/UMIP0.4_LMA_UBUNTU.10.04.py umip/extras/UMIP0.4_LMA_U
          print command
          os.system(command)
      index += 1
-@@ -168,7 +168,7 @@
+@@ -157,18 +145,9 @@
+ print command
+ os.system(command)
  
+-if g_pcap == "yes":
+-	command = "xhost + ; export DISPLAY=:0.0 ; sync; wireshark -i "+g_LmaPmipNetworkDevice+" -k -n -w  "+ g_path + "/logs/lma2mags."+g_run_version+".pcap &"
+-	value = os.system(command)
+-	print value
+-
+-	command = "xhost + ; export DISPLAY=:0.0 ; sync; wireshark -i "+g_LmaCoreNetworkDevice+" -k -n -w  "+ g_path + "/logs/lma2cn."+g_run_version+".pcap  &"
+-	value = os.system(command)
+-	print value
+-
  
  # LD_LIBRARY_PATH for freeradius libs
 -command = 'export LD_LIBRARY_PATH=/usr/local/lib;/usr/local/sbin/mip6d -c ' + g_file_config
@@ -100,17 +145,45 @@ diff -ruN umip_orig/extras/UMIP0.4_LMA_UBUNTU.10.04.py umip/extras/UMIP0.4_LMA_U
  
 diff -ruN umip_orig/extras/UMIP0.4_MAG_UBUNTU.10.04.py umip/extras/UMIP0.4_MAG_UBUNTU.10.04.py
 --- umip_orig/extras/UMIP0.4_MAG_UBUNTU.10.04.py	2014-02-10 16:59:21.720245675 +0000
-+++ umip/extras/UMIP0.4_MAG_UBUNTU.10.04.py	2014-02-10 17:40:57.856244416 +0000
-@@ -7,7 +7,7 @@
++++ umip/extras/UMIP0.4_MAG_UBUNTU.10.04.py	2014-02-10 22:44:50.716098217 +0000
+@@ -7,45 +7,32 @@
  import getopt
  
  from subprocess  import *
 -from netaddr import *
-+
+-
+-g_path = os.getcwd()
+-g_path = os.path.dirname(sys.argv[0]) + "/.."
+-g_path = os.path.abspath(g_path)
  
- g_path = os.getcwd()
- g_path = os.path.dirname(sys.argv[0]) + "/.."
-@@ -41,11 +41,11 @@
+ try:
+-    opts, args = getopt.getopt(sys.argv[1:], "prdc", ["pcap=", "runversion=", "pmipdir=", "cfile="])
++    opts, args = getopt.getopt(sys.argv[1:], "prdc", [ "cfile="])
+ except getopt.GetoptError, err:
+     # print help information and exit:
+     print str(err) # will print something like "option -a not recognized"
+     sys.exit(2)
+ 
+-g_pcap = "no"
+-g_run_version = "1"
+ g_config_file = ""
+ 
+ for o,p in opts:
+-  if o in ('-p','--pcap'):
+-     g_pcap = p
+-  elif o in ['-r','--runversion']:
+-     g_run_version = str(p)
+-  elif o in ['-d','--pmipdir']:
+-     g_path = p
+-  elif o in ['-c','--cfile']:
++  if o in ['-c','--cfile']:
+      g_config_file = str(p)
+ 
+ ############################################################################################
+-g_file_config=g_path+"/extras/"+g_config_file
++g_file_config=g_config_file
+ ############################################################################################
+ 
  print "Config file is : " + g_file_config
  
  
@@ -126,7 +199,7 @@ diff -ruN umip_orig/extras/UMIP0.4_MAG_UBUNTU.10.04.py umip/extras/UMIP0.4_MAG_U
  g_MagDeviceIngress                                = " "
  g_MagDeviceEgress                                 = " "
  
-@@ -63,20 +63,20 @@
+@@ -63,20 +50,20 @@
      element = element.strip('"')
      if 'RFC5213FixedMAGLinkLocalAddressOnAllAccessLinks' in line:
          print line
@@ -151,7 +224,7 @@ diff -ruN umip_orig/extras/UMIP0.4_MAG_UBUNTU.10.04.py umip/extras/UMIP0.4_MAG_U
      elif 'MagDeviceIngress' in line:
          print line
          g_MagDeviceIngress = element
-@@ -96,11 +96,11 @@
+@@ -96,11 +83,11 @@
  print command
  os.system(command)
  
@@ -165,7 +238,7 @@ diff -ruN umip_orig/extras/UMIP0.4_MAG_UBUNTU.10.04.py umip/extras/UMIP0.4_MAG_U
  print command
  os.system(command)
  
-@@ -116,11 +116,11 @@
+@@ -116,11 +103,11 @@
  print command
  os.system(command)
  
@@ -179,7 +252,7 @@ diff -ruN umip_orig/extras/UMIP0.4_MAG_UBUNTU.10.04.py umip/extras/UMIP0.4_MAG_U
  print command
  os.system(command)
  
-@@ -137,7 +137,7 @@
+@@ -137,7 +124,7 @@
  print command
  os.system(command)
  
@@ -188,9 +261,19 @@ diff -ruN umip_orig/extras/UMIP0.4_MAG_UBUNTU.10.04.py umip/extras/UMIP0.4_MAG_U
  print command
  os.system(command)
  
-@@ -162,6 +162,6 @@
- 	print value
+@@ -152,16 +139,7 @@
+ print command
+ os.system(command)
  
+-if g_pcap == "yes":
+-	command = "xhost +; export DISPLAY=:0.0; sync; wireshark -i "+g_MagDeviceEgress+" -k -n -w  "+ g_path + "/logs/mag12lma."+g_run_version+".pcap &"
+-	value = os.system(command)
+-	print value
+-
+-	command = "xhost +; export DISPLAY=:0.0; sync; wireshark -i "+g_MagDeviceIngress+" -k -n -w  "+ g_path + "/logs/mag12ap."+g_run_version+".pcap  &"
+-	value = os.system(command)
+-	print value
+-
  # LD_LIBRARY_PATH for freeradius libs
 -command = 'export LD_LIBRARY_PATH=/usr/local/lib;/usr/local/sbin/mip6d -c ' + g_file_config
 +command = 'export LD_LIBRARY_PATH=/usr/local/lib; mip6d -c ' + g_file_config
