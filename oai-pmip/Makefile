@@ -53,15 +53,15 @@ define Package/oai-pmip/install
 	$(INSTALL_DIR) $(1)/sbin/
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/src/mip6d $(1)/sbin/
 
-	$(INSTALL_DIR) $(1)/etc/oai-pmip
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/extras/example-cn.conf $(1)/etc/oai-pmip/
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/extras/example-ha.conf $(1)/etc/oai-pmip/
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/extras/example-ha-lma.conf $(1)/etc/oai-pmip/
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/extras/example-mag1.conf $(1)/etc/oai-pmip/
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/extras/example-mag2.conf $(1)/etc/oai-pmip/
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/extras/example-mn.conf $(1)/etc/oai-pmip/
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/extras/UMIP0.4_LMA_UBUNTU.10.04.py $(1)/etc/oai-pmip/
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/extras/UMIP0.4_MAG_UBUNTU.10.04.py $(1)/etc/oai-pmip/
+	#$(INSTALL_DIR) $(1)/etc/oai-pmip
+	#$(INSTALL_BIN) $(PKG_BUILD_DIR)/extras/example-cn.conf $(1)/etc/oai-pmip/
+	#$(INSTALL_BIN) $(PKG_BUILD_DIR)/extras/example-ha.conf $(1)/etc/oai-pmip/
+	#$(INSTALL_BIN) $(PKG_BUILD_DIR)/extras/example-ha-lma.conf $(1)/etc/oai-pmip/
+	#$(INSTALL_BIN) $(PKG_BUILD_DIR)/extras/example-mag1.conf $(1)/etc/oai-pmip/
+	#$(INSTALL_BIN) $(PKG_BUILD_DIR)/extras/example-mag2.conf $(1)/etc/oai-pmip/
+	#$(INSTALL_BIN) $(PKG_BUILD_DIR)/extras/example-mn.conf $(1)/etc/oai-pmip/
+	#$(INSTALL_BIN) $(PKG_BUILD_DIR)/extras/UMIP0.4_LMA_UBUNTU.10.04.py $(1)/etc/oai-pmip/
+	#$(INSTALL_BIN) $(PKG_BUILD_DIR)/extras/UMIP0.4_MAG_UBUNTU.10.04.py $(1)/etc/oai-pmip/
 
 endef
 
