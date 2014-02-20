@@ -137,10 +137,10 @@ for ip_ingress in g_MagAddressIngress:
     index += 1
 
 
-command = "modprobe ip6_tunnel"
+command = "insmod ip6_tunnel"
 print command
 os.system(command)
-command = "modprobe tunnel6"
+command = "insmod tunnel6"
 print command
 os.system(command)
 
@@ -149,7 +149,7 @@ print command
 os.system(command)
 
 # LD_LIBRARY_PATH for freeradius libs
-command = 'export LD_LIBRARY_PATH=/usr/local/lib;/usr/local/sbin/mip6d -c ' + g_file_config
+command = 'export LD_LIBRARY_PATH=/usr/local/lib; mip6d -c ' + g_file_config
 print command
 subprocess.call(command, shell=True)
 
