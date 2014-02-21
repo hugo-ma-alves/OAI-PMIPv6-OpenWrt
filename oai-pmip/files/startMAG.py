@@ -17,18 +17,26 @@ class IPv6Address:
                 return self.format()
 
         def format(self):
-                splited = self.ipv6.split("::")
-                toReturn =[]
-                if len(splited) == 0:
-                        toReturn = self.ipv6
-                else:
-                        toReturn.append(splited[0])
-                        octetsMiss = 8 - ( len(splited[0].split(":")) + len(splited[1].split(":")))
-                        toReturn.append(":0000" * octetsMiss)
-                        toReturn.append(":")
-                        toReturn.append(splited[1])
-
-                return ''.join(toReturn)
+        
+            ip_str=self.ipv6
+            if ip_str.find("::") >0:
+                new_ip = []
+                hextet = ip_str.split('::')
+                sep = len(hextet[0].split(':')) + len(hextet[1].split(':'))
+                new_ip = hextet[0].split(':')
+    
+                for _ in range(8 - sep):
+                    new_ip.append('0000')
+                new_ip += hextet[1].split(':')
+    
+                # Now need to make sure every hextet is 4 lower case characters.
+                # If a hextet is < 4 characters, we've got missing leading 0's.
+                ret_ip = []
+                for hextet in new_ip:
+                    ret_ip.append(('0' * (4 - len(hextet)) + hextet).lower())
+                return ':'.join(ret_ip)
+            # We've already got a longhand ip_str.
+            return ip_str
 
 
 try:

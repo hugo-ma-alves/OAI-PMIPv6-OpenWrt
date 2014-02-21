@@ -8,7 +8,35 @@ import getopt
 
 from subprocess  import *
 
+class IPv6Address:
 
+        def __init__ (self, ipv6):
+                self.ipv6 = ipv6
+
+        def __str__ (self):
+                return self.format()
+
+        def format(self):
+        
+            ip_str=self.ipv6
+            if ip_str.find("::") >0:
+                new_ip = []
+                hextet = ip_str.split('::')
+                sep = len(hextet[0].split(':')) + len(hextet[1].split(':'))
+                new_ip = hextet[0].split(':')
+    
+                for _ in range(8 - sep):
+                    new_ip.append('0000')
+                new_ip += hextet[1].split(':')
+    
+                # Now need to make sure every hextet is 4 lower case characters.
+                # If a hextet is < 4 characters, we've got missing leading 0's.
+                ret_ip = []
+                for hextet in new_ip:
+                    ret_ip.append(('0' * (4 - len(hextet)) + hextet).lower())
+                return ':'.join(ret_ip)
+            # We've already got a longhand ip_str.
+            return ip_str
 
 try:
     opts, args = getopt.getopt(sys.argv[1:], "prd", [ "runversion=", "cfile="])
